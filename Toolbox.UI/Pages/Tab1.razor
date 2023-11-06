@@ -1,0 +1,36 @@
+﻿@page "/Tab1"
+@using Microsoft.Extensions.Configuration
+@using Toolbox.Core.Configuration
+@inject IConfiguration Configuration 
+
+<div class="container">
+    @for (var i = 0; i < _nbrOfRow; i++)
+    {
+        <div class="row" style="margin-bottom: 5px">
+            <div class="col">
+                <LaunchCommand Launcher="@Launchers[_index]" />
+            </div>
+            @if (Launchers.ElementAtOrDefault(_index + 1) is not null)
+            {
+                <div class="col">
+                    <LaunchCommand Launcher="@Launchers[_index + 1]" />
+                </div>
+            }
+        </div>
+        _index += 2;
+    }
+</div>
+
+@code {
+    protected virtual int TabIndex => 0;
+    protected virtual LauncherConfiguration[] Launchers => Configuration.Get<ToolboxConfiguration>().Tabs[TabIndex].Launchers;
+
+    private int _nbrOfRow;
+    private int _index;
+
+    protected override void OnInitialized()
+    {
+        _nbrOfRow = (Launchers.Length + 1) / 2;
+        _index = 0;
+    }
+}

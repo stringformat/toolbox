@@ -1,0 +1,20 @@
+﻿@page "/"
+@inherits Tab1
+@using Microsoft.Extensions.Configuration
+@using Toolbox.Core.Configuration
+@inject IConfiguration Configuration 
+
+@{
+    base.BuildRenderTree(__builder);
+}
+
+@code
+{
+    protected override LauncherConfiguration[] Launchers
+        => Configuration
+            .Get<ToolboxConfiguration>()
+            .Tabs
+            .SelectMany(x => x.Launchers)
+            .Where(x => x.IsFavorite)
+            .ToArray();
+}

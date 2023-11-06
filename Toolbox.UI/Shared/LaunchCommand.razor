@@ -1,0 +1,21 @@
+﻿@using Toolbox.Core
+@using System.ComponentModel.DataAnnotations
+@using Toolbox.Core.Configuration
+@inject ICommandService CommandService
+
+<div class="card" style="width: 10rem; height: 9rem;">
+    <div class="card-body">
+        <p class="card-text" style="font-size: small; width: 8rem;height: 4rem;overflow: hidden;">@Launcher.Text</p>
+        <button class="btn btn-primary" @onclick="Execute">Go</button>
+    </div>
+</div>
+
+@code {
+    [Parameter, Required]
+    public LauncherConfiguration Launcher { get; init; }
+
+    private void Execute()
+    {
+        CommandService.ExecuteCommands(Launcher.Commands);
+    }
+}

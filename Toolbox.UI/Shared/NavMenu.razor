@@ -1,0 +1,36 @@
+﻿@using Toolbox.Core.Configuration
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+<nav class="navbar navbar-expand fixed-top navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">@_configuration.AppName</a>
+        <div class="collapse navbar-collapse">
+            <div class="navbar-nav">
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    Favoris
+                </NavLink>
+                @for (var i = 0; i < 5 ; i++)
+                {
+                    var index = i;
+                    if (_configuration.Tabs.ElementAtOrDefault(index) is not null)
+                    {
+                        <NavLink class="nav-link" href="@($"/Tab{index + 1}")">
+                            @_configuration.Tabs.ElementAtOrDefault(index)?.Name
+                        </NavLink>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+@code {
+    private ToolboxConfiguration _configuration;
+
+    protected override void OnInitialized()
+    {
+        _configuration = Configuration.Get<ToolboxConfiguration>();
+    }
+}
